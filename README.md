@@ -66,3 +66,19 @@ The idea is that django backend will render a page (an html template) and then R
 -in a separate terminal: run the script "dev" that we added in package.json --> npm run dev
 --Note: webpack will at index.js, which imports App; webpack will bundle everythings that's inside and output it in static/frontend
 -in static/frontend, a main.js appears which contains the bundled up javascript
+
+Adding styling and router
+add some css in static/css/index.css
+create three new components (pages) in src/components: HomePage.js, RoomJoinPage.js, CreateRoomPage.js
+import BrowserRouter, Switch, Route, Link, Redirect in HomePage
+in HomePage, add the Router and the different routes and which components they refer to inside the swith statements 
+Note: <Route exact path='/'> -> if you don't put 'exact', any path that start with a '/' (i.e. /join, /create) will lead to the homepage.
+To recap the process: 
+-> the browser checks the list of urls of teh project and see that anything different from admin or api leads to frontend/urls
+-> frontend/urls.py imports function 'index' from frontend/views.py,
+-> 'index' renders index.html,
+-> index.html loads static as well as main.js that holds all of our React code (bundled javascript),
+-> React execute index.js, which imports the class 'App' from App.js, 
+-> App renders HomePage in index.html into the div with the id='app',
+-> HomePage contains a Router which can switch among the home, join or create page,
+-> to access thoses pages, they must be added to frontend/urls.py
