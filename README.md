@@ -82,3 +82,18 @@ To recap the process:
 -> App renders HomePage in index.html into the div with the id='app',
 -> HomePage contains a Router which can switch among the home, join or create page,
 -> to access thoses pages, they must be added to frontend/urls.py
+
+Write a view to create a new room - backend
+add a CreateRoomView class in api/views.py with a post method (empty (pass))
+import APIView, response and status in views.py
+add a CreateRoonSerializer in api/serializer.py with the needed fields for the post request
+import CreateRoomSerializer to api/views.py
+in api/models.py, in class Room, change: code = ... default = '' to default = generate_unique_code
+Note: to know who the host is, we use a 'session key' so you don't need to sign in everytime the page is reloaded.
+complete the post method:
+- if session dores not exist, create one
+- if the user is sending a valid request, check if the user already has a room ongoing
+- if yes, update that room with new pause and skip data,
+- if not (if the user does nto have a room running), create one with host (session key created), pause and skip data
+- otherwise, request bad request error
+add create-room url
