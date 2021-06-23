@@ -74,7 +74,7 @@ import BrowserRouter, Switch, Route, Link, Redirect in HomePage
 in HomePage, add the Router and the different routes and which components they refer to inside the swith statements 
 Note: <Route exact path='/'> -> if you don't put 'exact', any path that start with a '/' (i.e. /join, /create) will lead to the homepage.
 To recap the process: 
--> the browser checks the list of urls of teh project and see that anything different from admin or api leads to frontend/urls
+-> the browser checks the list of urls of them project and see that anything different from admin or api leads to frontend/urls
 -> frontend/urls.py imports function 'index' from frontend/views.py,
 -> 'index' renders index.html,
 -> index.html loads static as well as main.js that holds all of our React code (bundled javascript),
@@ -94,6 +94,16 @@ complete the post method:
 - if session dores not exist, create one
 - if the user is sending a valid request, check if the user already has a room ongoing
 - if yes, update that room with new pause and skip data,
-- if not (if the user does nto have a room running), create one with host (session key created), pause and skip data
+- if not (if the user does not have a room running), create one with host (session key created), pause and skip data
 - otherwise, request bad request error
 add create-room url
+
+Add style and forms to the CreateRoomPage
+import stuff from material-ui
+add main grid
+add sub-grid with title (typography)
+add form (FormControl) with a text (FormHelperText), and add options (RadioGroup) with labels (FormControlLabel) with different colors
+add a form with text field to vote for skipping a song
+add two other forms for the buttons
+Note: set a variable at the beginning of the class for the default value and set the onChange parameter to 
+Note: set the onChnage parameters to the methods that will change the state of the data to be send to the backend
