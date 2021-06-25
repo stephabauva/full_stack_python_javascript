@@ -107,3 +107,8 @@ add a form with text field to vote for skipping a song
 add two other forms for the buttons
 Note: set a variable at the beginning of the class for the default value and set the onChange parameter to 
 Note: set the onChnage parameters to the methods that will change the state of the data to be send to the backend
+
+Add page to display the room info with the room code
+create Room.js: create default state, add variable to get the roomCode from React's props.match.params, and render info
+add route to HomePage with /room/:roomCode
+add url t frontend.urls with 'room/<str:roomCode>'
