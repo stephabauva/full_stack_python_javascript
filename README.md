@@ -1,6 +1,6 @@
 # full_stack_python_javascript
 
-Set up
+Set up:
 -start django project music_controller (creates folder with settings.py)
 -cd in music_controller and start django app api
     ---Note: in api/; -> models.py has the database models; views.py renders views or api endpoints; an endpoint is a location on the webserver you want to go to like /home)
@@ -17,7 +17,7 @@ BackEnd: Creating An API Endpoint With Django Rest Framework - Build the databas
 --create an urls.py in the api folder and link the api view class to a url
 -include api url to the project urls file -> path('api/', include('api.urls'))
 
-FrontEnd: Adding a frontend app with React
+FrontEnd: Adding a frontend app with React:
 -start django app frontend
 -in settings.py, add the frontend app in INSTALLED_APPS --> 'frontend.apps.FrontendConfig'
 -cd frontend
@@ -67,7 +67,7 @@ The idea is that django backend will render a page (an html template) and then R
 --Note: webpack will at index.js, which imports App; webpack will bundle everythings that's inside and output it in static/frontend
 -in static/frontend, a main.js appears which contains the bundled up javascript
 
-Adding styling and router
+Adding styling and router:
 add some css in static/css/index.css
 create three new components (pages) in src/components: HomePage.js, RoomJoinPage.js, CreateRoomPage.js
 import BrowserRouter, Switch, Route, Link, Redirect in HomePage
@@ -83,7 +83,7 @@ To recap the process:
 -> HomePage contains a Router which can switch among the home, join or create page,
 -> to access thoses pages, they must be added to frontend/urls.py
 
-Write a view to create a new room - backend
+Write a view to create a new room - backend:
 add a CreateRoomView class in api/views.py with a post method (empty (pass))
 import APIView, response and status in views.py
 add a CreateRoonSerializer in api/serializer.py with the needed fields for the post request
@@ -98,7 +98,7 @@ complete the post method:
 - otherwise, request bad request error
 add create-room url
 
-Add style and forms to the CreateRoomPage
+Add style and forms to the CreateRoomPage:
 import stuff from material-ui
 add main grid
 add sub-grid with title (typography)
@@ -108,7 +108,14 @@ add two other forms for the buttons
 Note: set a variable at the beginning of the class for the default value and set the onChange parameter to 
 Note: set the onChnage parameters to the methods that will change the state of the data to be send to the backend
 
-Add page to display the room info with the room code
-create Room.js: create default state, add variable to get the roomCode from React's props.match.params, and render info
+Add page to display the room info with the room code (video 7):
+create Room.js: create default states (values at false at first, link to the backend later), add variable to get the roomCode from React's props.match.params, and render info
 add route to HomePage with /room/:roomCode
-add url t frontend.urls with 'room/<str:roomCode>'
+add url to frontend.urls with 'room/<str:roomCode>'
+create the get request getRoom to get the data
+add the url to api.urls
+try http://127.0.0.1:8000/api/get-room?code=SZSLTA in browser; ...?code=hello should not work
+add function getRoomDetails to Room to fetch the data from the backend
+call that function with this.getRoomDetails() in Room Constructor that will update the state and force a re-render 
+Note: add toString() to {this.state.guestCanPause} and {this.state.isHost} to eb able to see the result in the browser
+in CreateRoomPage.js, modify handleRoomButtonPressed() with React props.history.push() so that when when press create a room, we get directed to the right page --> this.props.history.push('/room/' + data.code)
