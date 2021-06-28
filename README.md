@@ -119,3 +119,10 @@ add function getRoomDetails to Room to fetch the data from the backend
 call that function with this.getRoomDetails() in Room Constructor that will update the state and force a re-render 
 Note: add toString() to {this.state.guestCanPause} and {this.state.isHost} to eb able to see the result in the browser
 in CreateRoomPage.js, modify handleRoomButtonPressed() with React props.history.push() so that when when press create a room, we get directed to the right page --> this.props.history.push('/room/' + data.code)
+
+add content to join the room page and hook it to the backend:
+in RoomJoinPage, add default states, and layout for the textfield and the buttons
+in api/views, add the JoinRoom class that will check the data attached to the room code in the DB and return it
+Note: also add room_code info to the session data so that if the user leaves, it won't need to re-enter the room code of the last session when he comes back
+add the path('join-room', JoinRoom.as_view()) to api/urls
+in RoomJoinRoom, add the fetch request in the roomButtonPressed method and add it to the onClick key
