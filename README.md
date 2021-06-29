@@ -122,8 +122,10 @@ in CreateRoomPage.js, modify handleRoomButtonPressed() with React props.history.
 
 add content to join the room page and hook it to the backend (vid 8):
 in RoomJoinPage, add default states, and layout for the textfield and the buttons
-in api/views, add the JoinRoom class that will check the data attached to the room code in the DB and return it
-Note: also add room_code info to the session data so that if the user leaves, it won't need to re-enter the room code of the last session when he comes back
+in api/views, add the JoinRoom class that will check the data attached to the room code in the DB
+if some data exists - if len(room_result) > 0 - add the room code to the session data: self.request.session['room_code'] = code
+Note: now if the user leaves, it won't need to re-enter the room code of the last session when he comes back
+Note: the session data and room data (in DB) are two separate things
 add the path('join-room', JoinRoom.as_view()) to api/urls
 in RoomJoinRoom, add the fetch request in the roomButtonPressed method and add it to the onClick key
 
@@ -138,3 +140,15 @@ Add the url to aip/urls
 in homePage, set a state for roomCode and fetch the actual roomCode data to componentDidMount
 in HomePage Router, add what to render --> which page to redirect depending on if the user is already in a room or not
 Note: if he is in a room then redirect to that room, if not redirect to the homepage
+
+Adding functionality to leave the room and go back to HomePage (vid 10)
+in views, create a post request in a class LeaveRoom
+pop the room_code from the user session data
+get the user code (session_key)
+delete all room data attached to the session key
+add the url
+when the page render we need to reset the state of the room code to null, otherwise even we delete it from the database it will still be present as a state --> add a clearRoomCode method and setState of roomCode to null
+in the Route of the Room page, render Room with its props (roomCode: "WGGVFK" in match.params is the one we need) and also add a call back to the props: leaveRoomCallback
+Note: props are provided in HomePage by Route
+Note: a call back allows a child component to alter a parent component
+in Room. leaveRoomCode is used in getRoomDetails and leaveButtonPressed to clear any roomCode previously set as state
