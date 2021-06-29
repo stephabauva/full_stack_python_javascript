@@ -108,7 +108,7 @@ add two other forms for the buttons
 Note: set a variable at the beginning of the class for the default value and set the onChange parameter to 
 Note: set the onChnage parameters to the methods that will change the state of the data to be send to the backend
 
-Add page to display the room info with the room code (video 7):
+Add page to display the room info with the room code (vid 7):
 create Room.js: create default states (values at false at first, link to the backend later), add variable to get the roomCode from React's props.match.params, and render info
 add route to HomePage with /room/:roomCode
 add url to frontend.urls with 'room/<str:roomCode>'
@@ -120,9 +120,21 @@ call that function with this.getRoomDetails() in Room Constructor that will upda
 Note: add toString() to {this.state.guestCanPause} and {this.state.isHost} to eb able to see the result in the browser
 in CreateRoomPage.js, modify handleRoomButtonPressed() with React props.history.push() so that when when press create a room, we get directed to the right page --> this.props.history.push('/room/' + data.code)
 
-add content to join the room page and hook it to the backend:
+add content to join the room page and hook it to the backend (vid 8):
 in RoomJoinPage, add default states, and layout for the textfield and the buttons
 in api/views, add the JoinRoom class that will check the data attached to the room code in the DB and return it
 Note: also add room_code info to the session data so that if the user leaves, it won't need to re-enter the room code of the last session when he comes back
 add the path('join-room', JoinRoom.as_view()) to api/urls
 in RoomJoinRoom, add the fetch request in the roomButtonPressed method and add it to the onClick key
+
+Styling the homepage and redirecting the user to his room (vid 9)
+The idea: When we go to the homepage , we need to call the endpoint to check if the user is already in a room. 
+Note: we add a async to the componentDidMount method so that the rest of the application does not wait for the method to finish/backend response (to check if the user is already in a room and so get redirected to it)
+Note: React's LifeCycle Methods like componentDidMount are things you can hook into to alter the behavior of a component. componentDidMount() is a hook that gets invoked right after a React component has been mounted aka after the first render() lifecycle.
+Note: componentDidMount is a lifecycle hook. It doesn't need to be called/invoked directly
+Add styling to HomePage (add ButtonGroup tp have the buttons side by side; disableElevation removes the shadows)
+Add view to api/views to get the room code based on the user session
+Add the url to aip/urls
+in homePage, set a state for roomCode and fetch the actual roomCode data to componentDidMount
+in HomePage Router, add what to render --> which page to redirect depending on if the user is already in a room or not
+Note: if he is in a room then redirect to that room, if not redirect to the homepage
