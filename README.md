@@ -108,7 +108,7 @@ add two other forms for the buttons
 Note: set a variable at the beginning of the class for the default value and set the onChange parameter to 
 Note: set the onChnage parameters to the methods that will change the state of the data to be send to the backend
 
-Add page to display the room info with the room code (vid 7):
+Add page to display the room info with the room code (v7):
 create Room.js: create default states (values at false at first, link to the backend later), add variable to get the roomCode from React's props.match.params, and render info
 add route to HomePage with /room/:roomCode
 add url to frontend.urls with 'room/<str:roomCode>'
@@ -129,7 +129,7 @@ Note: the session data and room data (in DB) are two separate things
 add the path('join-room', JoinRoom.as_view()) to api/urls
 in RoomJoinRoom, add the fetch request in the roomButtonPressed method and add it to the onClick key
 
-Styling the homepage and redirecting the user to his room (vid 9)
+Styling the homepage and redirecting the user to his room (v9)
 The idea: When we go to the homepage , we need to call the endpoint to check if the user is already in a room. 
 Note: we add a async to the componentDidMount method so that the rest of the application does not wait for the method to finish/backend response (to check if the user is already in a room and so get redirected to it)
 Note: React's LifeCycle Methods like componentDidMount are things you can hook into to alter the behavior of a component. componentDidMount() is a hook that gets invoked right after a React component has been mounted aka after the first render() lifecycle.
@@ -141,7 +141,7 @@ in homePage, set a state for roomCode and fetch the actual roomCode data to comp
 in HomePage Router, add what to render --> which page to redirect depending on if the user is already in a room or not
 Note: if he is in a room then redirect to that room, if not redirect to the homepage
 
-Adding functionality to leave the room and go back to HomePage (vid 10)
+Adding functionality to leave the room and go back to HomePage (v10)
 in views, create a post request in a class LeaveRoom
 pop the room_code from the user session data
 get the user code (session_key)
@@ -152,3 +152,21 @@ in the Route of the Room page, render Room with its props (roomCode: "WGGVFK" in
 Note: props are provided in HomePage by Route
 Note: a call back allows a child component to alter a parent component
 in Room. leaveRoomCode is used in getRoomDetails and leaveButtonPressed to clear any roomCode previously set as state
+
+Adding settings feature for the host to modify the room page (v11)
+add updateRoom class in views with a patch method (need the room code, guest_can_pause and votes_to_skip data)
+add a serializer (updateRoomSerializer) to pass the data from the request to the view
+Note: in models.py the code field needs to be unique, which will pause a pb when we want to update the room since we need to pass a room code that already exists; it's not unique.
+Note: so we redefine the code field (from models.py) right in the serializer. Now, code will be referencing this field --> serializers.CharField(validators=[]) and not the one in models where code needs to be unique.
+Note: also add a security to check if the person doign the update is the host of the page in case of hack
+add the url
+in Room.js add a settings button with a showSettings default value to false in the constructor 
+add an updateShowSettings method that can setState of showSettings
+bind updateShowSettings's this to the the this of the class
+add the renderSettingsButton method that will change the value of showSettings to true 
+add the line that will render the button if the user is the host of the room --> {this.state.isHost ? this.renderSettingButton() : null}
+add the renderSettings method that will return the settings page instead of the room page
+Note: the settings is the createRoomPage with some tweeks
+in renderSettings, add a back button to the room page
+in Room' render, add an if statement that will render the settings page if the settings button is presssed; and thus showSettings state is true, otherwise render the room page
+bind this of renderSettingsButton and renderSettings to this of class
