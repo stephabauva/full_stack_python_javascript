@@ -170,3 +170,28 @@ Note: the settings is the createRoomPage with some tweeks
 in renderSettings, add a back button to the room page
 in Room' render, add an if statement that will render the settings page if the settings button is presssed; and thus showSettings state is true, otherwise render the room page
 bind this of renderSettingsButton and renderSettings to this of class
+Note: updateCallback is function called whenever the room is updatedr
+
+Making one component reusable (create/update room) (v12)
+Note: to reuse createRoomPage for the update page we need to pass it props but createRoomPage does not take props
+Note: one way of fixing this is to use 'default props' (static variable)
+add static defaultProps to createRoomPage with th default values
+in the constructor, change the values of guestCanPause and votesToSkip to their props
+look for place where we hard coded fields, like the default value of the votes to skip field or default value in RadioGroup of guestCanPause
+add aternary operator to change the title of the page to update if this.props.update  = true
+change the hard coded  Create Room title to { title }
+create two new methods: one to render the button to create a room and one that renders the button to update the room
+add a ternary operator at the bottom of teh page to render either the create or the update button depending on the state of this.sprops.update
+add the handleUpdateButtonPressed method: request a patch to update the room and add success and error alert message
+add default success and error message ("") in the constructor
+bind teh methods to the this of this of the class
+change teh onClick value of renderUpdateButtons to this.handleUpdateButtonPressed
+import collapse from material-ui
+add Collapse to the page render to pop-up success or error messages
+since the room page still has some previous states of data, we use the updateCallback to call getRoomDetails after the room data has been updated
+in handleUpdateButtonPressed, add teh callback after the fetch is finished executing (important)
+Note: since we passed getRoomDetails as the call back function to the createRoomPage, bind get roomDetails this to the this of teh class to have the this.setState of getRoomDetails available
+install material-ui/lab to get the 'alert' feature: npm install @material-ui/lab (note: install in /frontend to have access to npm)
+import ALert from material-ui
+add the Alert to Collapse
+Note: onClose -> setState to empty strings to clear the state of success/error message so that the mesage disappear once the 'x' is pressed
