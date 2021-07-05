@@ -195,3 +195,43 @@ install material-ui/lab to get the 'alert' feature: npm install @material-ui/lab
 import ALert from material-ui
 add the Alert to Collapse
 Note: onClose -> setState to empty strings to clear the state of success/error message so that the mesage disappear once the 'x' is pressed
+
+Adding Spotify API (v13)
+create spotify account and create app
+add spotify app in project folder: python ./manage.py startapp spotify
+add urls.py and credentials.py files
+Note: credentials will contain our spotify credentials (client ID, secret and redirect uri)
+Note: the prefered way to store credentials is through environment variables which is a little more complex than just storing them in a file
+create view AuthURL that will allow the user to authenticate our app
+Note: AuthURL is the API endpoint that returns a url which we are going to use to authenticate our app. 
+Note: the scopes is what information we are able to access(from spotify docs)
+Note: after we send the request to be able to get spotify data, the user logs in and authorize our access, we then need an other url where the data ('code') is going to be returned to: aka a RETURN URL/URI or Callback so it can then request the access and refresh tokens with it, among other things.
+add post request in spotify_callback function to views
+Note: since multiple users will be creating rooms, we need to store all their tokens
+Note: we associate the user session key with their accesss/refresh tokens (note: we only need the access token for people who are host of the room); once we have the host access and refresh token we can do whatever we want.
+make a model that can store tokens: SpotifyToken
+add spotify.apps.SpotifyConfig (otherwise you get an error later when making the migrations to update the DB)
+do a python ./manage.py makemigrations and python ./manage.py migrate
+Note: so things din't get too messy (all information in one file (models)), we create a utils.py file that will store the tokens
+create a utils.py, which will create or update tokens
+in utils.py, add functions to get the user tokens and uodate or create user tokens
+import those functions in views
+invoke update_or_create_user_tokens in spotify_callback 
+redirect the callback to the frontend
+specify the app_name and name of path in urls
+Note: app_name -> this is so django knows that this urls.py belongs to the frontend app, it is required to make the 'redirect' of spotify_callback (views) work 
+Noate: path name -> naming the path (name='') is necessary to identifying the path so that when we call the redirect function, we know which path we should actually go to
+add a functions to check if the user is already authenticated so that he does not have to re-authenticate
+Note: we check if the current session ID is in the database and if the access token is expired or not
+add function to refresh the access token if it's expired: expiry <= timezone.now() and update the database
+add a view that will let us know if we are authenticated: IsAuthenticated; that will JSON the result from is_spotify_authenticated from utils.py
+add url to spotify/urls.py
+in Room.js, add a spotifyAuthenticated state to false
+add an authenticateSpotify method to ask teh backen if the user is authenticated, only if he's a host.
+invoke that method into getRoomDetails method
+Note: the app get the room details, then check if teh user is a host, if yes, it invokes authenticateSpotify
+update the state of spotifyAuthenticated with the status from the response
+if the user is not authenticated, window.location.replace(data.url) redirects the user to the spotify authorization page, from here, after the user authorises us; we get redirected to the spotify_callback (views), the spotify call back will save the token and redirect us to the frontend, then the frontend will redirect us back to the room page.
+bind the authenticateSpotify method to the this keyword
+add the redirect url to REDIRECT_URI in credentials.py 
+in spotify dashboard, edit settings of the project and authorize that redirect url with the same redirect url from credentials
