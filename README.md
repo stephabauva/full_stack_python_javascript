@@ -227,11 +227,28 @@ add function to refresh the access token if it's expired: expiry <= timezone.now
 add a view that will let us know if we are authenticated: IsAuthenticated; that will JSON the result from is_spotify_authenticated from utils.py
 add url to spotify/urls.py
 in Room.js, add a spotifyAuthenticated state to false
-add an authenticateSpotify method to ask teh backen if the user is authenticated, only if he's a host.
+add an authenticateSpotify method to ask the backen if the user is authenticated, only if he's a host.
 invoke that method into getRoomDetails method
-Note: the app get the room details, then check if teh user is a host, if yes, it invokes authenticateSpotify
+Note: the app get the room details, then check if the user is a host, if yes, it invokes authenticateSpotify
 update the state of spotifyAuthenticated with the status from the response
 if the user is not authenticated, window.location.replace(data.url) redirects the user to the spotify authorization page, from here, after the user authorises us; we get redirected to the spotify_callback (views), the spotify call back will save the token and redirect us to the frontend, then the frontend will redirect us back to the room page.
 bind the authenticateSpotify method to the this keyword
 add the redirect url to REDIRECT_URI in credentials.py 
 in spotify dashboard, edit settings of the project and authorize that redirect url with the same redirect url from credentials
+
+Using Spotify API (v14)
+add currentSong function to spotify view to get data from the song
+in utils, add a function that will handle any type of request sent to spotify: execute_spotify_api_request
+Note: "Bearer " + tokens.access_token is the way to send an authorization request to spotify
+Note: if we dont do a post nor a put request then the response is a get request
+Modify Room.js to see the song data
+add a state song (empty string) that will store the song data and get updated whenever it changes 
+add getCurrentSong method to call the endpoint current-song to get the song data and update the state of song
+get the state of song in render
+invoke getCurrentSong after authenticating
+Note: usually you would use a Web Socket to handle changes automatically but Spotify does not offer web sockets for the public so we instead the "pulling" method which will check the song data every second (not optimal)
+in Room, implement an interval in componentDidMount method: we call getCurrentSong every second
+bind getCurrentSOng to the class this keyword
+in Room, to stop that interval when the component unmount (stops/disappears), clear the interval in a componentWillUnmount method
+add a MusicPlayer.js file that will render the music player buttons in a Card from material-ui
+in Room, return MusicPlayer with the song data in the props
