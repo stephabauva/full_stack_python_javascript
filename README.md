@@ -259,3 +259,4 @@ add play_song and pause_song to util.py
 add urls
 add pauseSong and playSong method in MusicController
 in MusicController, in IconButton, add the onClick event for the play/pause button
+Note: to modify the playback control via API you need a premium account. Need to implements browser playback later on.
