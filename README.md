@@ -252,3 +252,10 @@ bind getCurrentSOng to the class this keyword
 in Room, to stop that interval when the component unmount (stops/disappears), clear the interval in a componentWillUnmount method
 add a MusicPlayer.js file that will render the music player buttons in a Card from material-ui
 in Room, return MusicPlayer with the song data in the props
+
+pausing and playing music (v15)
+in view add PauseSong and PlaySong that get the room code from the user session key, get the room data from the room code and call play/pause (from util.py) if the user is either the host or is allowed to 
+add play_song and pause_song to util.py
+add urls
+add pauseSong and playSong method in MusicController
+in MusicController, in IconButton, add the onClick event for the play/pause button
