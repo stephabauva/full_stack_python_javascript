@@ -12,5 +12,6 @@ urlpatterns = [
     # the redirect function, we know which path we should actually go to
     path('join', index),
     path('create', index),
-    path('room/<str:roomCode>', index)
+    path('room/<str:roomCode>', index),
+    path('info', index),
 ]

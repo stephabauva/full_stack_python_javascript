@@ -279,3 +279,9 @@ Note: also, using the foreign key, it will also delete all votes related to the 
 import Vote 
 invoke update_room_song in the get request of CurrentSong class
 display number of votes to skip in MusicPlayer render
+
+Adding functional components (v17)
+add Info component
+add info button in HomePage
+addthe Route
+add the url
