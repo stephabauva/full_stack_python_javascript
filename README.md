@@ -254,9 +254,28 @@ add a MusicPlayer.js file that will render the music player buttons in a Card fr
 in Room, return MusicPlayer with the song data in the props
 
 pausing and playing music (v15)
-in view add PauseSong and PlaySong that get the room code from the user session key, get the room data from the room code and call play/pause (from util.py) if the user is either the host or is allowed to 
+in spotify view add PauseSong and PlaySong that get the room code from the user session key, get the room data from the room code and call play/pause (from util.py) if the user is either the host or is allowed to 
 add play_song and pause_song to util.py
 add urls
-add pauseSong and playSong method in MusicController
-in MusicController, in IconButton, add the onClick event for the play/pause button
+add pauseSong and playSong method in MusicPlayer
+in MusicPlayer, in IconButton, add the onClick event for the play/pause button
 Note: to modify the playback control via API you need a premium account. Need to implements browser playback later on.
+
+Skipping Songs and Handling Votes (v16)
+add SkipSong class in spotify view that will invike skip_song() from util if user is host
+add skip_song to util
+add url
+add skipSong method to MusicPlayer
+add onClick event to skip button
+Note: using the arrow function allows us to not having to bind the method to the this keyword. (irrelevant in this case though)
+in spotify/models add the Vote model
+Note: ForeignKey allows use to pass the instance of the Room object to the Vote model; it will store a reference to that room in our Vote. That way, when we look at a vote we can determine which room is was in; and access all information about that room from this vote
+Note: on_delete=models.CASCADE means that if the room gets deleted
+in api/models, in Room, add the current_song field
+makemigrations and migrate
+add update_room_song method in the currentSong class in spotify views 
+Note: it will check if the current song has the same id as the one in the database. If no, update the current song in the DB
+Note: also, using the foreign key, it will also delete all votes related to the previous song
+import Vote 
+invoke update_room_song in the get request of CurrentSong class
+display number of votes to skip in MusicPlayer render
